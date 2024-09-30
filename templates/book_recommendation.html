@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation</title>
+    
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Inline CSS for additional styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container-fluid {
+            padding: 30px;
+        }
+        .sidebar {
+            padding: 20px;
+            background-color: #f1f1f1;
+            height: 100vh;
+            border-right: 2px solid #ddd;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e2e6ea;
+            border-left: 4px solid #007bff;
+            border-radius: 5px;
+        }
+        .slider {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Sidebar for User Input -->
+            <div class="col-md-3 sidebar">
+                <h2>Input Form</h2>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author:</label>
+                        <input type="text" id="author" name="author" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="genre" class="form-label">Genre:</label>
+                        <select id="genre" name="genre" class="form-select" required>
+                            <option value="" disabled selected>Select genre</option>
+                            <option value="Fiction">Fiction</option>
+                            <option value="Non-Fiction">Non-Fiction</option>
+                            <option value="Science Fiction">Science Fiction</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Biography">Biography</option>
+                            <!-- Add more genres as needed -->
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating:</label>
+                        <input type="range" id="rating" name="rating" min="1" max="5" step="0.1" class="form-range" oninput="updateRatingValue(this.value)" required>
+                        <output id="ratingValue">3</output>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Maximum Price:</label>
+                        <input type="range" id="price" name="price" min="0" max="1000" step="10" class="form-range" oninput="updatePriceValue(this.value)" required>
+                        <output id="priceValue">500</output>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Get Recommendation</button>
+                </form>
+            </div>
+
+            <!-- Main content area for displaying results -->
+            <div class="col-md-9 main-content">
+                <h1>Book Recommendation</h1>
+                <p>Submit the form on the left to get personalized book recommendations based on your inputs.</p>
+
+                <!-- Display the recommendation if it exists -->
+                {% if recommendation %}
+                    <div class="result">
+                        <h4>Recommended Book:</h4>
+                        <p>{{ recommendation }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Optionally, you can display usage descriptions or tips -->
+                <!-- {% if usage_description %} -->
+                <!--     <div class="result"> -->
+                <!--         <h4>How to Use:</h4> -->
+                <!--         <p>{{ usage_description }}</p> -->
+                <!--     </div> -->
+                <!-- {% endif %} -->
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional for interactive components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateRatingValue(value) {
+            document.getElementById('ratingValue').textContent = value;
+        }
+        
+        function updatePriceValue(value) {
+            document.getElementById('priceValue').textContent = value;
+        }
+    </script>
+</body>
+</html>

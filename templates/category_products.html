@@ -1,0 +1,91 @@
+{% extends 'theme.html' %}
+
+{% block content %}
+<style>
+  /* General body styling */
+  body {
+    background-color: #f8f9fa; /* Light background for contrast */
+  }
+
+  /* CSS for product cards */
+  .card {
+    margin-bottom: 30px; /* Space between cards */
+    border: none; /* Remove default border */
+    border-radius: 10px; /* Rounded corners */
+    transition: box-shadow 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+    background-color: #ffffff; /* White background for card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    overflow: hidden; /* Prevent overflow for rounded corners */
+    width: 100%; /* Full width of the column */
+    max-width: 200px; /* Set a max width for cards */
+    text-align: center; /* Center text within card */
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+  }
+
+  .card-img-top {
+    width: 100%; /* Full width */
+    height: 180px; /* Fixed height */
+    object-fit: cover; /* Maintain aspect ratio */
+    border-bottom: 1px solid #e0e0e0; /* Subtle bottom border */
+  }
+
+  .card-body {
+    padding: 15px; /* Inner padding for content */
+  }
+
+  .card-title {
+    font-size: 16px; /* Slightly smaller title */
+    margin: 10px 0; /* Margins for spacing */
+    color: #333; /* Darker text color for visibility */
+    font-weight: bold; /* Bold title */
+  }
+
+  .card-text {
+    font-size: 14px; /* Adjusted font size */
+    color: #666; /* Slightly lighter text color */
+    margin: 5px 0; /* Less margin for compactness */
+  }
+
+  .btn-primary {
+    background-color: #007bff; /* Button color */
+    color: #fff; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 12px; /* Padding for button */
+    font-size: 14px; /* Button font size */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s; /* Smooth transition */
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3; /* Darker color on hover */
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .card {
+      max-width: 100%; /* Full width on smaller screens */
+    }
+  }
+</style>
+
+<h1 class="text-center">Products in {{ category.category_name }}</h1>
+<div class="row justify-content-center"> <!-- Centering the row -->
+  {% for product in products %}
+    <div class="col-md-3 d-flex justify-content-center"> <!-- Flexbox for centering cards -->
+      <div class="card">
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">Price: ₹{{ product.price }}</p>
+          <a href="{% url 'product_details' product.id %}" class="btn btn-primary">View Product</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

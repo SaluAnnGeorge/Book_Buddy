@@ -1,0 +1,137 @@
+{% block content %}
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif; /* Modern font */
+      background-color: #f4f4f9; /* Light grey background */
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #2c3e50; /* Darker shade */
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 2.8rem; /* Larger font for the title */
+      font-weight: 700; /* Bold text */
+      letter-spacing: 2px; /* Space between letters */
+    }
+
+    .details-section {
+      display: flex;
+      flex-wrap: wrap; /* Make the layout responsive */
+      justify-content: center; /* Center the content */
+      gap: 30px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Softer shadow */
+      max-width: 1200px;
+      margin: 40px auto;
+    }
+
+    .details-section > div {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .details-section img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px; /* Smooth rounded corners */
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); /* Light shadow */
+      transition: transform 0.3s ease;
+    }
+
+    .details-section img:hover {
+      transform: scale(1.05); /* Subtle zoom effect */
+    }
+
+    .add-to-cart-button {
+      display: block;
+      margin: 30px auto 0; /* Center button */
+      padding: 15px 40px;
+      background-color: #3498db; /* Updated color for button */
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 50px; /* Rounded button */
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      font-size: 1.2rem;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Button shadow */
+    }
+
+    .add-to-cart-button:hover {
+      background-color: #2980b9;
+      transform: translateY(-3px); /* Hover lift effect */
+    }
+
+    .details-section p {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 15px;
+      color: #555; /* Softer text color */
+    }
+
+    .details-section p b {
+      color: #2c3e50; /* Dark color for labels */
+      font-weight: 600;
+    }
+
+    .product-info {
+      margin-bottom: 20px;
+    }
+
+    .stock-status {
+      font-size: 1.2rem;
+      color: #e74c3c;
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .details-section {
+        flex-direction: column;
+      }
+
+      .details-section img {
+        margin-bottom: 20px;
+      }
+
+      .add-to-cart-button {
+        width: 80%; /* Adjust button size on mobile */
+        font-size: 1rem;
+      }
+    }
+  </style>
+
+  <h1>{{ product.title }}</h1>
+  <div class="details-section">
+    <div>
+      <p><b>{{ product.description }}</b></p>
+      <p><b>Book Title: </b>{{ product.name }}</p>
+      <p><b>Author:</b> {{ product.author }}</p>
+      <p><b>Price:</b> {{ product.price }}</p>
+      <p><b>Published Date:</b> {{ product.published_date }}</p>
+      <p><b>Stock: </b>{{ product.quantity_in_stock }}</p>
+      <p><b>Page Count: </b>{{ product.page_count }}</p>
+      <p><b>Publisher:</b> {{ product.publisher }}</p>
+      <p><b>Genre: </b>{{ product.genre }}</p>
+      <p><b>Country of origin: </b>{{ product.country_of_origin }}</p>
+      {% if product.quantity_in_stock == 0 %}
+        <span class="stock-status">Out of Stock</span>
+      {% elif product.quantity_in_stock < product.reorder_level %}
+        <span class="stock-status">Limited Stock</span>
+      {% endif %}
+    </div>
+    <div>
+      <img src="{{ product.image.url }}" alt="{{ product.title }}">
+      {% if product.quantity_in_stock > 0 %}
+        <a href="{% url 'add_to_cart' %}" class="add-to-cart-button">Add to Cart</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #555;
+        }
+
+        img {
+            max-width: 80px;
+            max-height: 80px;
+            vertical-align: middle;
+        }
+
+        .address-checkbox {
+            display: none;
+        }
+
+        .address-label {
+            position: relative;
+            cursor: pointer;
+            padding-left: 25px;
+            margin-right: 15px;
+            line-height: 30px;
+            display: block;
+            color: #444;
+            transition: color 0.3s ease;
+        }
+
+        .address-label:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #555;
+            border-radius: 50%;
+            background-color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .address-checkbox:checked + .address-label:before {
+            background-color: #21f364;
+            border-color: #2196F3;
+        }
+
+        .address-checkbox:checked + .address-label:after {
+            content: "\2713";
+            font-size: 18px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+        }
+
+        button {
+            background-color: #2196F3;
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-message" id="popupMessage">
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+<div class="container">
+
+    <h2>Checkout</h2>
+
+    <div>
+        <h3>Cart Items</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>
+                        <img src="{{ item.product.product_image.url }}" alt="{{ item.product.title }}">
+                        {{ item.product.name}}
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.product.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" align="right">Total:</td>
+                    <td>₹{{ total_price }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <a href="{% url 'address_create' %}">
+            <button class="add-address-button">Add Address</button>
+        </a>
+    </div>
+
+    <div>
+        <h3>Select Address</h3>
+        <form action="{% url 'checkout' %}" method="POST">
+            {% csrf_token %}
+            {% for address in addresses %}
+            <input type="checkbox" id="address{{ address.id }}" class="address-checkbox" name="address_id" value="{{ address.id }}">
+            <label for="address{{ address.id }}" class="address-label">{{ address.address_line1 }}, {{ address.city }}, {{ address.country }}</label>
+            {% endfor %}
+            <button type="submit">Proceed to Payment</button>
+            <a href="{% url 'index' %}">
+                <a href="/" class="btn">Go to Home</a> <!-- "Go to Home" button -->
+              </a>
+            
+        </form>
+    </div>
+
+
+</div>
+<!-- checkout-area end -->
+<script>
+    function selectAddress(addressId) {
+      const addressIdInput = document.getElementById('address-id');
+      addressIdInput.value = addressId;
+    }
+    
+    </script>
+
+</body>
+</html>

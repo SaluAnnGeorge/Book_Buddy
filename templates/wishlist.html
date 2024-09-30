@@ -1,0 +1,71 @@
+{% extends 'theme.html' %}
+
+{% block content %}
+  <style>
+    .product-card {
+      width: 80%;
+      margin-bottom: 20px;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px; /* Set the desired height */
+      object-fit: cover;
+    }
+
+    .product-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      background-color:light green;
+    }
+
+    .btn-primary {
+    background-color: #290e92; /* Primary color for buttons */
+    border: none;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+    margin-right: 5px;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+  </style>
+   <h1>Wishlist</h1>
+  <div class="container mt-40 mb-40">
+    <div class="row">
+      {% for item in wishlist %}
+        <div class="col-md-4 mt-3">
+          <div class="card product-card">
+            <!-- <img src="{{product.image}}" class="card-img img-fluid" width="96" height="350" alt=""> -->
+            <img src="{{ item.product.image.url}}" class="card-img img-fluid product-image" alt="{{ item.product.name }}">
+            <div class="card-body bg-light text-center">
+              <div class="mb-2">
+                <h6 class="font-weight-semibold mb-2">
+                  
+                </h6>
+              </div>
+              <h5 class="card-title">{{item.product.name}}</h5>
+              <h6 class="mb-0 font-weight-semibold">₹{{ item.product.price }}</h6>
+              <div class="product-buttons">
+  
+                <a href="{% url 'add_to_cart'  %}" class="btn btn-primary">Add to Cart</a>
+                <a href="{% url 'product_details' item.product.id %}" class="btn btn-primary btn-add-to-cart">View product</a>
+
+                <a href="{% url 'remove_from_wishlist' item.product.id %}" class="btn btn-primary btn-add-to-cart">Remove</a>
+                
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p>No products found.</p>
+        {% endfor %}
+    </div>
+    <a href="{% url 'index' %}">
+      <a href="/" class="btn">Go to Home</a> <!-- "Go to Home" button -->
+    </a>
+  </div>
+{% endblock %}

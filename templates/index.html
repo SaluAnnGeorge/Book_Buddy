@@ -1,0 +1,384 @@
+{% extends 'theme.html' %}
+
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+</head>
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+  <style>
+    .product-card {
+  width: 60%;
+  margin: 15px auto;
+  height: 400px; /* Set a fixed height to make all cards the same size #55b4ad;*/
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: hsl(240, 9%, 98%); /* White background */
+  background-image: url('https://www.transparenttextures.com/patterns/white-paper.png'); /* Subtle texture */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+.container {
+  background-color: #f0f4f8; /* Light gray-blue background for a clean and modern look */
+  padding: 20px; /* Add some padding for spacing */
+  border-radius: 15px; /* Round the corners of the container */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+
+
+
+
+  
+
+
+.product-card:hover {
+  transform: scale(1.02);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px; /* Adjust the height of the image */
+  object-fit: contain;
+  background-color: #f8f9fa;
+}
+
+.card-body {
+  padding: 10px;
+  text-align: center;
+  flex-grow: 1; /* Ensure it takes up the available space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  flex-grow: 1; /* Ensures the title occupies available space */
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e74c3c;
+  margin-top: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.product-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-primary {
+  background-color: #0e9220;
+  border: none;
+  padding: 4px 6px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+    .swiper-container {
+      width: 100%;
+      height: 600px;
+      margin-bottom: 20px;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #e74c3c;
+      margin-top: 10px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Hero section styling */
+    .hero {
+      background-image: url('hero-image.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 100px 20px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      margin: 0 0 20px;
+    }
+
+    .cta-button {
+      padding: 15px 30px;
+      background-color: #190485;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background-color: #16a4f0;
+    }
+
+    /* Chatbot icon styling */
+    .chatbot-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #190485;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .chatbot-icon:hover {
+      background-color: #16a4f0;
+    }
+    .shop-widget {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f0f0f5;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.shop-widget:hover {
+  transform: scale(1.03);
+}
+
+.shop-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #190485;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.shop-link {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.shop-link li {
+  margin: 10px;
+  display: inline-block;
+  position: relative; /* Important to position the subcategories relative to the parent */
+}
+
+.shop-link li a {
+  display: block;
+  padding: 15px 25px;
+  font-size: 18px;
+  color: #000;
+  background-color: #fff;
+  border-radius: 50px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.shop-link li a:hover {
+  background-color: #190485;
+  color: #fff;
+}
+
+.shop-link li ul {
+  display: none;
+  position: absolute;
+  top: 100%; /* Show just below the parent category */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap; /* Prevents subcategory wrapping */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px 15px;
+}
+
+.shop-link li:hover ul {
+  display: flex; /* Display the subcategories horizontally */
+  gap: 10px; /* Add space between subcategories */
+}
+
+.shop-link li ul li {
+  margin: 0;
+}
+
+.shop-link li ul li a {
+  padding: 10px 15px;
+  font-size: 16px;
+  border-bottom: none;
+  background-color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.shop-link li ul li a:hover {
+  background-color: #190485;
+  color: #fff;
+  border-bottom: none;
+}
+
+  </style>
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<div class="swiper-container">
+ <div class="swiper-wrapper">
+   <div class="swiper-slide"><img src="{% static 'Banner1.jpg' %}" alt="Banner 1"></div>
+   <div class="swiper-slide"><img src="{% static 'b2.jpg' %}" alt="Banner 2"></div>
+   <div class="swiper-slide"><img src="{% static 'Banner2.png' %}" alt="Banner 3"></div>
+   <div class="swiper-slide"><img src="{% static 'Library 1.jpg' %}" alt="Banner 3"></div>
+ </div>
+ <div class="swiper-pagination"></div>
+ <div class="swiper-button-next"></div>
+ <div class="swiper-button-prev"></div>
+</div>
+
+  <div class="shop-widget">
+    <h2 class="shop-title">Explore the deals...</h2>
+    <h3 class="shop-title">Genre</h3>
+    <ul class="shop-link">
+      {% for category in categories %}
+        <li>
+          <a href="{% url 'category_products' category.id %}">
+            <h6>{{ category.category_name }}</h6>
+          </a>
+          <ul>
+            {% for subcategory in category.subcategory_set.all %}
+              <li>
+                <a href="{% url 'subcategory_products' subcategory.id %}">
+                  {{ subcategory.subcategory_name }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Find Your Next Great Read with Personalized Book Recommendations</h2>
+      <p>Get tailored book recommendations based on your favorite authors, genres, ratings, and price preferences. Let us guide you to your next must-read</p>
+      <a href="{% url 'book_recommendation' %}" class="cta-button">Get Your Recommendation</a>
+      <a href="https://bookrecomsystem-augxcjm3k77amdjrmqx4xz.streamlit.app/" class="cta-button">Dataset Recommendation</a>
+    </div>
+  </section>
+
+  <div class="container mt-40 mb-40">
+    <div class="row">
+      {% for product in products %}
+        <div class="col-md-3 mt-3">
+          <div class="card product-card">
+            <img src="{{ product.image.url }}" class="card-img img-fluid product-image" alt="{{ product.name }}">
+            <span class="wishlist-icon position-absolute top-0 start-0">
+              <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-primary">
+                <i class="fas fa-heart"></i>
+              </a>
+            </span>
+            {% if product.quantity_in_stock == 0 %}
+              <span class="stock-status" style="font-size: larger; color: brown;">Out of Stock</span>
+            {% elif product.quantity_in_stock < product.reorder_level %}
+              <span class="stock-status" style="font-size: larger; color: brown;">Limited Stock</span>
+            {% endif %}
+            <div class="card-body bg-light text-center">
+              <h5 class="card-title"><a href="{% url 'product_details' product.id %}">{{ product.name }}</a></h5>
+              <p class="product-price">₹{{ product.price }}</p>
+              {% if product.quantity_in_stock > 0 %}
+                <div class="product-buttons">
+                  <form id="add-to-cart-form" action="{% url 'add_to_cart' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" id="cart-button" class="btn btn-primary btn-add-to-cart">Add to Cart</button>
+                  </form>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Chatbot Icon -->
+  <a href="{% url 'chat' %}">
+    <div class="chatbot-icon">
+      <i class="fas fa-comments"></i> <!-- FontAwesome icon for chat -->
+    </div>
+  </a>
+
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      autoplay: {
+        delay: 5000,
+      },
+    });
+  </script>
+{% endblock %}

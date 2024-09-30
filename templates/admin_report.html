@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Sales Report</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0077ff;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #0077ff, #00ffb9);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        label {
+            font-size: 1.2em;
+            color: #555;
+            margin-right: 20px;
+        }
+        input[type="month"] {
+            padding: 10px;
+            font-size: 1.1em;
+            border: 2px solid #ccc;
+            background-color: #f0f0f0;
+            color: #333;
+            border-radius: 10px;
+            margin-right: 20px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input[type="month"]:focus {
+            border-color: #00aaff;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #0077ff, #00ffb9);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 127, 255, 0.2);
+        }
+        .report-summary {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 12px;
+            font-size: 1.4em;
+            color: #0077ff;
+            text-align: center;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            margin-bottom: 40px;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #0077ff;
+            color: #ffffff;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f0f8ff;
+        }
+        tbody tr:hover {
+            background-color: #e6f2ff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .download-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #0077ff, #00ffb9);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .download-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 127, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Monthly Sales Report</h1>
+
+        <form method="get" action="{% url 'admin_reports' %}">
+            <label for="month">Select Month:</label>
+            <input type="month" id="month" name="month" value="{{ month }}" required>
+            <button type="submit">Generate Report</button>
+        </form>
+
+        <div class="report-summary">
+            <h2>Total Sales: {{ total_sales|floatformat:2 }}</h2>
+        </div>
+
+        <h3>Sales Per Product</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity Sold</th>
+                    <th>Total Sales Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in product_sales %}
+                <tr>
+                    <td>{{ item.product__name }}</td>
+                    <td>{{ item.total_quantity }}</td>
+                    <td>{{ item.total_price|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No sales data available for this month.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'admin_reports' %}?month={{ month }}&export=true" class="download-button">Download Excel Report</a>
+    </div>
+</body>
+</html>

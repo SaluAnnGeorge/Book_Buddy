@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Detail</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .order-info {
+            background-color: #f2f2f2;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .order-items th, .order-items td {
+            border: none;
+            border-bottom: 1px solid #dddddd;
+            padding: 10px;
+        }
+
+        .order-items th {
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .order-items tr:last-child td {
+            border-bottom: none;
+        }
+
+        .no-items {
+            font-style: italic;
+            color: #999999;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Detail</h1>
+        
+        <div class="order-info">
+            <p><strong>Order ID:</strong> {{ order.id }}</p>
+            <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+            <p><strong>Status:</strong> {{ order.status }}</p>
+            <p><strong>Total Price:</strong> ₹{{ order.total_price }}</p>
+        </div>
+
+        <h2>Order Items</h2>
+        <table class="order-items">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_item in order.orderitem_set.all %}
+                <tr>
+                    <td>{{ order_item.product.name }}</td>
+                    <td>{{ order_item.quantity }}</td>
+                    <td>₹{{ order_item.total_price }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="no-items">No items in this order.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'index' %}">
+            <a href="/" class="btn">Go to Home</a> <!-- "Go to Home" button -->
+          </a>
+    </div>
+</body>
+</html>

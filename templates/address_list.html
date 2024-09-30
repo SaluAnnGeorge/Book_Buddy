@@ -1,0 +1,97 @@
+{% extends "theme.html" %}
+
+{% block content %}
+<style>
+    .main-menu a {
+        color: black !important;
+    }
+
+    .container {
+        padding: 30px;
+        margin-top: 150px;
+        background-color: #fff; /* Changed to white background */
+    }
+
+    .btn {
+        background-color: green;
+        color: white;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: darkgreen;
+    }
+
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-primary {
+        background-color: #0066ff;
+    }
+
+    .btn-info {
+        background-color: #0099cc;
+    }
+
+    .btn-danger {
+        background-color: #ff3333;
+    }
+
+    .btn-primary:hover,
+    .btn-info:hover,
+    .btn-danger:hover {
+        background-color: #0052cc;
+    }
+</style>
+
+<div class="container">
+    <h2>Address List</h2>
+
+    <!-- Card for adding a new address -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Add New Address</h5>
+            <p class="card-text">Click below to add a new address:</p>
+            <a href="{% url 'address_create' %}" class="btn btn-primary">Add Address</a>
+        </div>
+    </div>
+
+    {% if request.user.customer.address_set.all %}
+        <!-- Cards for displaying existing addresses -->
+        {% for address in request.user.customer.address_set.all %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ address.recepient_name }}</h5>
+                    <p class="card-text">{{ address.address_line1 }}</p>
+                    <p class="card-text">{{ address.city }}, {{ address.state }} - {{ address.postal_code }}</p>
+                    <a href="{% url 'address_edit' address.id %}" class="btn btn-info">Edit</a>
+                    <a href="{% url 'address_delete' address.id %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No addresses found.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
